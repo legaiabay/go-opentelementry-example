@@ -17,7 +17,7 @@ import (
 
 const environment = "development"
 const service = "payroll-service"
-const url = "http://localhost:14268/api/traces"
+const url = "http://180.250.125.66:14268/api/traces"
 
 var Tracer OpenTelemetry
 
@@ -56,7 +56,7 @@ func Init(name string) OpenTelemetry {
 	// Create initial context
 	ctx, cancel := context.WithCancel(context.Background())
 
-	// Get current running function name
+	// Get current running func	tion name
 	fpcs := make([]uintptr, 1)
 	_ = runtime.Callers(2, fpcs)
 	f := runtime.FuncForPC(fpcs[0] - 1)
@@ -75,7 +75,7 @@ func Init(name string) OpenTelemetry {
 
 }
 
-func (s OpenTelemetry) Trace(name string, params string) {
+func (s *OpenTelemetry) Trace(name string, params string) oteltrace.Span {
 	// Get current running function name
 	fpcs := make([]uintptr, 1)
 	_ = runtime.Callers(2, fpcs)
@@ -85,10 +85,11 @@ func (s OpenTelemetry) Trace(name string, params string) {
 
 	_, span := tr.Start(s.Context, name)
 	span.SetAttributes(attribute.Key("value").String(params))
-	defer span.End()
+
+	return span
 }
 
-func (s OpenTelemetry) End() {
+func (s *OpenTelemetry) End() {
 	s.MainSpan.End()
 
 	s.Context, s.Cancel = context.WithTimeout(s.Context, time.Second*5)
