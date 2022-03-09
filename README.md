@@ -1,2 +1,2 @@
-# opentelementry-example
-OpenTelementry example using Jaeger
+# go-opentelementry-example
+Golang OpenTelementry example using Jaeger
