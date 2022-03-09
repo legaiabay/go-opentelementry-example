@@ -17,7 +17,7 @@ import (
 
 const environment = "development"
 const service = "payroll-service"
-const url = "http://180.250.125.66:14268/api/traces"
+const url = "http://localhost:14268/api/traces"
 
 var Tracer OpenTelemetry
 
